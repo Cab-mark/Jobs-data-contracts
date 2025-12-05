@@ -4,7 +4,7 @@ Canonical data contracts and schemas for the CS Jobs Board solution. This reposi
 
 ## Overview
 
-This repository contains OpenAPI/JSON Schema definitions that are used to generate type-safe client libraries for multiple programming languages. The generated exports ensure consistency across all applications in the Jobs Board platform.
+This repository contains OpenAPI/JSON Schema definitions that are used to generate type-safe TypeScript types. The generated exports ensure consistency across all applications in the Jobs Board platform, including Next.js applications.
 
 ## Repository Structure
 
@@ -15,100 +15,222 @@ This repository contains OpenAPI/JSON Schema definitions that are used to genera
 │   │   └── openapi.yaml
 │   └── search/                # Search API service schemas
 │       └── openapi.yaml
-├── generated/                 # Auto-generated code (do not edit manually)
-│   ├── typescript/           # TypeScript types and interfaces
-│   └── python/               # Pydantic models
-└── scripts/                   # Build and generation scripts
+├── generated/                 # Auto-generated TypeScript (do not edit manually)
+│   ├── jobs.ts               # Generated from jobs/openapi.yaml
+│   └── search.ts             # Generated from search/openapi.yaml
+├── src/                       # Source entry points
+│   ├── index.ts              # Main entry point with type aliases
+│   ├── jobs.ts               # Jobs API exports
+│   └── search.ts             # Search API exports
+└── dist/                      # Compiled output (excluded from git)
 ```
 
-## Schemas
+## Installation
 
-All canonical schemas are defined in the `schemas/` directory using OpenAPI 3.x specification format. These schemas define:
+Install the package from npm:
 
-- **Job Postings**: Structure for job listings, requirements, and metadata
-- **Applications**: Candidate application data and status tracking
-- **Users**: User profiles (candidates, employers, admins)
-- **Companies**: Company/employer information
-- **Common Types**: Shared enumerations, validation patterns, and reusable components
-
-## Generated Exports
-
-### TypeScript
-
-TypeScript types and interfaces are generated for use in frontend applications and Node.js services.
-
-**Installation:**
 ```bash
-npm install @your-org/jobs-data-contracts
+npm install jobs-data-contracts
 ```
 
-**Usage:**
+Or with yarn:
+
+```bash
+yarn add jobs-data-contracts
+```
+
+## Usage
+
+### Importing Types
+
+Import commonly used types directly:
+
 ```typescript
-import { JobPosting, Application } from '@your-org/jobs-data-contracts';
+import { 
+  Job, 
+  JobResultItem, 
+  JobSearchResponse, 
+  Approach, 
+  Grade, 
+  Profession,
+  Salary,
+  FixedLocation,
+  OverseasLocation 
+} from 'jobs-data-contracts';
 ```
 
-### Python (Pydantic)
+### Using Types in Your Application
 
-Pydantic models are generated for use in Python backend services, providing runtime validation.
+```typescript
+import { Job, JobSearchResponse } from 'jobs-data-contracts';
 
-**Installation:**
-```bash
-pip install jobs-data-contracts
+// Type-safe job object
+const job: Job = {
+  externalId: 'ext-123',
+  approach: 'External',
+  title: 'Software Engineer',
+  description: 'Join our team...',
+  organisation: 'Tech Corp',
+  location: [{ countryName: 'United Kingdom', countryCode: 'GB' }],
+  grade: 'Grade 7 Equivalent',
+  assignmentType: 'Permanent',
+  personalSpec: 'Requirements...',
+  applyDetail: 'How to apply...',
+  closingDate: '2024-12-31T23:59:59Z',
+  profession: 'Digital and Data',
+  recruitmentEmail: 'jobs@example.com'
+};
+
+// Type-safe API response
+const searchResponse: JobSearchResponse = {
+  results: [],
+  total: 0,
+  page: 1,
+  pageSize: 10,
+  totalPages: 0
+};
 ```
 
-**Usage:**
-```python
-from jobs_data_contracts import JobPosting, Application
+### Importing from Specific Modules
+
+For more granular imports:
+
+```typescript
+// Search API types
+import { SearchComponents, SearchPaths, SearchOperations } from 'jobs-data-contracts/search';
+
+// Jobs API types
+import { JobsComponents, JobsPaths, JobsOperations } from 'jobs-data-contracts/jobs';
 ```
+
+### Available Type Exports
+
+| Export | Description |
+|--------|-------------|
+| `Job` | Full job object for indexing |
+| `JobResultItem` | Compact job result in search responses |
+| `JobSearchResponse` | Search API response with pagination |
+| `FixedLocation` | UK location with address details |
+| `OverseasLocation` | International location |
+| `Salary` | Salary range and currency |
+| `Contacts` | Contact information |
+| `Approach` | Enum: Internal, Across Government, External |
+| `Assignments` | Enum: Apprentice, FTA, Loan, Secondment, Permanent |
+| `Grade` | Enum: Civil Service grades |
+| `Profession` | Enum: Civil Service professions |
+| `ApiError` | Error response type |
 
 ## Development
 
 ### Prerequisites
 
 - Node.js >= 18
-- Python >= 3.9
-- OpenAPI Generator CLI or datamodel-code-generator
 
-### Generating Code
-
-Run the generation scripts to create type-safe exports:
+### Setup
 
 ```bash
-# Generate TypeScript types
-npm run generate:typescript
-
-# Generate Python Pydantic models
-npm run generate:python
-
-# Generate all
-npm run generate:all
+npm install
 ```
 
-### Validation
+### Generating TypeScript Types
 
-Validate schema files before committing:
+To regenerate TypeScript types from the OpenAPI schemas:
 
 ```bash
-npm run validate:schemas
+# Generate all TypeScript types
+npm run generate:typescript
+
+# Or generate individually
+npm run generate:jobs    # Generate from jobs/openapi.yaml
+npm run generate:search  # Generate from search/openapi.yaml
+```
+
+### Building the Package
+
+Build the package (generates types and compiles TypeScript):
+
+```bash
+npm run build
+```
+
+### Testing
+
+Type-check without emitting files:
+
+```bash
+npm test
+```
+
+## Publishing
+
+### Publishing to npm
+
+1. Update the version in `package.json`
+2. Build and publish:
+
+```bash
+npm run build
+npm publish
+```
+
+The `prepublishOnly` script automatically runs the build before publishing.
+
+### Publishing a Scoped Package
+
+To publish as a scoped package (e.g., `@your-org/jobs-data-contracts`):
+
+1. Update the `name` in `package.json`:
+   ```json
+   "name": "@your-org/jobs-data-contracts"
+   ```
+
+2. Publish with public access:
+   ```bash
+   npm publish --access public
+   ```
+
+### Publishing to GitHub Packages
+
+Add to `package.json`:
+
+```json
+"publishConfig": {
+  "registry": "https://npm.pkg.github.com"
+}
+```
+
+Then publish:
+
+```bash
+npm publish
+```
+
+### Local Development (without publishing)
+
+Link the package locally for development:
+
+```bash
+# In this repository
+npm link
+
+# In your Next.js application
+npm link jobs-data-contracts
 ```
 
 ## Versioning
 
 This repository follows [Semantic Versioning](https://semver.org/):
 
-- **Major**: Breaking changes to schemas
+- **Major**: Breaking changes to schemas or generated types
 - **Minor**: New schemas or backward-compatible additions
 - **Patch**: Documentation updates, bug fixes in generation scripts
-
-Each release creates versioned packages for TypeScript and Python distributions.
 
 ## Contributing
 
 1. **Schema Changes**: All schema modifications should be made in the `schemas/` directory
-2. **Validation**: Ensure schemas pass validation before submitting PRs
-3. **Generation**: Regenerate exports and commit the generated code
-4. **Testing**: Test generated code in consuming applications
-5. **Documentation**: Update this README and inline schema documentation
+2. **Generation**: After schema changes, run `npm run generate:typescript` to regenerate types
+3. **Testing**: Run `npm test` to verify types compile correctly
+4. **Documentation**: Update this README if adding new types or changing usage
 
 ### Schema Guidelines
 
@@ -123,12 +245,6 @@ Each release creates versioned packages for TypeScript and Python distributions.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Related Repositories
-
-- **Frontend Application**: [Link to frontend repo]
-- **Backend API**: [Link to backend repo]
-- **Mobile App**: [Link to mobile repo]
-
 ## Support
 
-For questions or issues, please open a GitHub issue or contact the platform team.
+For questions or issues, please open a GitHub issue.
