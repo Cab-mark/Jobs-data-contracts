@@ -1,0 +1,50 @@
+{
+  "name": "jobs-data-contracts",
+  "version": "1.0.0",
+  "description": "Canonical data contracts and schemas for the CS Jobs Board solution. This repository serves as the single source of truth for all data structures used across the Jobs Board ecosystem.",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    },
+    "./jobs": {
+      "types": "./dist/src/jobs.d.ts",
+      "import": "./dist/src/jobs.js",
+      "require": "./dist/src/jobs.js"
+    },
+    "./search": {
+      "types": "./dist/src/search.d.ts",
+      "import": "./dist/src/search.js",
+      "require": "./dist/src/search.js"
+    }
+  },
+  "files": [
+    "dist",
+    "schemas"
+  ],
+  "scripts": {
+    "generate:jobs": "openapi-typescript ./schemas/jobs/openapi.yaml -o ./generated/jobs.ts",
+    "generate:search": "openapi-typescript ./schemas/search/openapi.yaml -o ./generated/search.ts",
+    "generate:typescript": "npm run generate:jobs && npm run generate:search",
+    "build": "npm run generate:typescript && tsc",
+    "prepublishOnly": "npm run build",
+    "test": "tsc --noEmit"
+  },
+  "keywords": [
+    "jobs",
+    "data-contracts",
+    "typescript",
+    "openapi",
+    "types"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "openapi-typescript": "^7.10.1",
+    "typescript": "^5.9.3"
+  }
+}

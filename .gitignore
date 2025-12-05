@@ -10,6 +10,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+package-lock.json
 
 # Generated code (optional - decide if you want to commit generated code)
 # generated/

@@ -1,2 +1,10 @@
 # Jobs API OpenAPI Specification
 # Define your jobs service schema here
+openapi: 3.0.3
+info:
+  title: Jobs API
+  version: "1.0.0"
+  description: Jobs API service placeholder - schemas to be defined
+paths: {}
+components:
+  schemas: {}
