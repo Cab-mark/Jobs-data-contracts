@@ -1,2 +1,441 @@
-# Search API OpenAPI Specification
-# Define your search service schema here
+openapi: 3.0.3
+info:
+  title: Jobs Search API
+  version: "1.3.0"
+  description: API for indexing jobs and searching across indexed jobs. externalId is required and used as the canonical job identifier. Search payloads are trimmed to what the search engine needs.
+servers:
+  - url: https://search-api.example.com
+    description: Production search server
+paths:
+  /search/index:
+    post:
+      summary: Index a single job (create or update in index). Job must include externalId which is used as the canonical identifier.
+      operationId: indexJob
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        "200":
+          description: Job indexed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  indexed:
+                    type: boolean
+                  externalId:
+                    type: string
+                example:
+                  indexed: true
+                  externalId: "ext-123"
+        "400":
+          description: Invalid job object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /search/bulk:
+    post:
+      summary: Bulk index jobs. Each job must include externalId which is used as the canonical identifier.
+      operationId: bulkIndexJobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobs
+              properties:
+                jobs:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Job'
+      responses:
+        "200":
+          description: Bulk indexing result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  indexed:
+                    type: integer
+                  failed:
+                    type: integer
+                  failures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        externalId:
+                          type: string
+                        error:
+                          type: string
+                example:
+                  total: 3
+                  indexed: 2
+                  failed: 1
+                  failures:
+                    - externalId: "ext-456"
+                      error: "validation error: missing closingDate"
+        "400":
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /search:
+    get:
+      summary: Search jobs
+      operationId: searchJobs
+      parameters:
+        - name: q
+          in: query
+          description: Full-text query string
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number (1-based)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          description: Page size
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+        - name: appliedFilters
+          in: query
+          description: JSON or simple comma-separated filters applied (implementation-specific)
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Sort order (e.g. relevance, closingDate:asc)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Search results (compact JobResultItem list)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobSearchResponse'
+        "400":
+          description: Invalid query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    # Full Job schema (used for indexing requests). externalId is required and is the canonical identifier.
+    Job:
+      type: object
+      required:
+        - externalId
+        - approach
+        - title
+        - description
+        - organisation
+        - location
+        - grade
+        - assignmentType
+        - personalSpec
+        - applyDetail
+        - closingDate
+        - profession
+        - recruitmentEmail
+      properties:
+        id:
+          type: string
+          description: Internal unique identifier (may be present in source systems)
+        externalId:
+          type: string
+          description: External canonical identifier for the job (required)
+        approach:
+          $ref: '#/components/schemas/Approach'
+        title:
+          type: string
+        description:
+          type: string
+        organisation:
+          type: string
+        location:
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/FixedLocation'
+            - type: array
+              items:
+                $ref: '#/components/schemas/OverseasLocation'
+          description: Array of fixed locations OR array of overseas locations
+        grade:
+          oneOf:
+            - $ref: '#/components/schemas/Grade'
+            - type: string
+        assignmentType:
+          $ref: '#/components/schemas/Assignments'
+        personalSpec:
+          type: string
+        applyDetail:
+          type: string
+        closingDate:
+          type: string
+          format: date-time
+        profession:
+          $ref: '#/components/schemas/Profession'
+        recruitmentEmail:
+          type: string
+          format: email
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contacts'
+        nationalityRequirement:
+          type: string
+        summary:
+          type: string
+        applyUrl:
+          type: string
+          format: uri
+        benefits:
+          type: string
+        salary:
+          $ref: '#/components/schemas/Salary'
+        # Removed: attachments, jobNumbers, successProfileDetails, disabilityConfident,
+        # dcStatus, prisonScheme, veteranScheme, complaintsInfo,
+        # workingForTheCivilService, eligibilityCheck - not needed for search engine
+
+    # Compact result item returned in search results per your JobResultItem interface.
+    JobResultItem:
+      type: object
+      required:
+        - id
+        - externalId
+        - title
+        - organisation
+        - location
+      properties:
+        id:
+          type: string
+          description: Internal unique identifier
+          readOnly: true
+        externalId:
+          type: string
+          description: External identifier (e.g. originating system id). Used as canonical identifier.
+          readOnly: true
+        title:
+          type: string
+        organisation:
+          type: string
+        location:
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/FixedLocation'
+            - type: array
+              items:
+                $ref: '#/components/schemas/OverseasLocation'
+          description: Array of fixed locations OR array of overseas locations
+        assignmentType:
+          $ref: '#/components/schemas/Assignments'
+        salary:
+          $ref: '#/components/schemas/Salary'
+        closingDate:
+          type: string
+          format: date-time
+          nullable: true
+        profession:
+          $ref: '#/components/schemas/Profession'
+        approach:
+          $ref: '#/components/schemas/Approach'
+
+    FixedLocation:
+      type: object
+      properties:
+        uprn:
+          type: string
+        saoText:
+          type: string
+        paoText:
+          type: string
+        streetDescription:
+          type: string
+        locality:
+          type: string
+        townName:
+          type: string
+        postTown:
+          type: string
+        postcode:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        formattedAddress:
+          type: string
+        fullAddressSearch:
+          type: string
+
+    OverseasLocation:
+      type: object
+      required:
+        - countryName
+        - countryCode
+      properties:
+        countryName:
+          type: string
+        countryCode:
+          type: string
+        locationDisplay:
+          type: string
+
+    Salary:
+      type: object
+      required:
+        - minimum
+        - currency
+      properties:
+        minimum:
+          type: number
+          format: double
+        maximum:
+          type: number
+          format: double
+        currency:
+          type: string
+        currencySymbol:
+          type: string
+        salaryDetails:
+          type: string
+
+    Contacts:
+      type: object
+      properties:
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+          format: email
+        contactPhone:
+          type: string
+
+    Approach:
+      type: string
+      enum:
+        - Internal
+        - Across Government
+        - External
+
+    Assignments:
+      type: string
+      enum:
+        - Apprentice
+        - Fixed Term Appointment (FTA)
+        - Loan
+        - Secondment
+        - Permanent
+
+    Grade:
+      type: string
+      enum:
+        - Senior Civil Service - Permanent Secretary
+        - Senior Civil Service - Director General (PB3)
+        - Senior Civil Service - Director (PB2)
+        - Senior Civil Service - Deputy Director (PB1/1A)
+        - Grade 6 Equivalent
+        - Grade 7 Equivalent
+        - Senior Executive Officer (SEO) Equivalent
+        - Higher Executive Officer (HEO) Equivalent
+        - Executive Officer (EO) Equivalent
+        - Administrative Officer (AO) Equivalent
+        - Administrative Assistant (AA) Equivalent
+
+    Profession:
+      type: string
+      enum:
+        - Actuary
+        - Commercial
+        - Communications
+        - Corporate Finance
+        - Counter Fraud
+        - Digital and Data
+        - Economics
+        - Finance
+        - Geography
+        - Human Resources
+        - Intelligence Analysis
+        - Internal Audit
+        - International Trade
+        - Knowledge and Information Management
+        - Legal
+        - Clinical
+        - Occupational Psychology
+        - Operational Delivery
+        - Operational Research
+        - Planning
+        - Planning Inspection
+        - Policy
+        - Project Delivery
+        - Property
+        - Risk Management
+        - Science and Engineering
+        - Security
+        - Social Research
+        - Statistics
+        - Tax
+        - Veterinary
+
+    JobSearchResponse:
+      type: object
+      required:
+        - results
+        - total
+        - page
+        - pageSize
+        - totalPages
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobResultItem'
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        query:
+          type: string
+          nullable: true
+        appliedFilters:
+          type: string
+          nullable: true
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      example:
+        code: 400
+        message: "Invalid request"
