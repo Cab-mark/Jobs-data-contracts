@@ -30,7 +30,9 @@
     "generate:jobs": "openapi-typescript ./schemas/jobs/openapi.yaml -o ./generated/jobs.ts",
     "generate:search": "openapi-typescript ./schemas/search/openapi.yaml -o ./generated/search.ts",
     "generate:typescript": "npm run generate:jobs && npm run generate:search",
+    "generate:python": "./scripts/generate_pydantic.sh",
     "build": "npm run generate:typescript && tsc",
+    "build:python": "npm run generate:python",
     "prepublishOnly": "npm run build",
     "test": "tsc --noEmit"
   },
