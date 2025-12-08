@@ -28,8 +28,8 @@ import type { components as JobsSchemas } from '../jobs';
 import type { components as SearchSchemas } from '../search';
 
 // Jobs API types
-export type Job = JobsSchemas['schemas']['Job'];
 export type JobSummary = JobsSchemas['schemas']['JobSummary'];
+export type Job = JobsSchemas['schemas']['Job'];
 export type JobCreate = JobsSchemas['schemas']['JobCreate'];
 export type JobUpdate = JobsSchemas['schemas']['JobUpdate'];
 export type JobAttachment = JobsSchemas['schemas']['JobAttachment'];
@@ -45,5 +45,7 @@ export type DCStatus = JobsSchemas['schemas']['DCStatus'];
 
 // Search API types
 export type JobResultItem = SearchSchemas['schemas']['JobResultItem'];
+export type FixedLocation = SearchSchemas['schemas']['FixedLocation'];
+export type OverseasLocation = SearchSchemas['schemas']['OverseasLocation'];
 export type JobSearchResponse = SearchSchemas['schemas']['JobSearchResponse'];
 export type ApiError = SearchSchemas['schemas']['Error'];
