@@ -24,17 +24,26 @@ export {
 } from '../search';
 
 // Export commonly used types at the top level for convenience
+import type { components as JobsSchemas } from '../jobs';
 import type { components as SearchSchemas } from '../search';
 
-export type Job = SearchSchemas['schemas']['Job'];
+// Jobs API types
+export type Job = JobsSchemas['schemas']['Job'];
+export type JobSummary = JobsSchemas['schemas']['JobSummary'];
+export type JobCreate = JobsSchemas['schemas']['JobCreate'];
+export type JobUpdate = JobsSchemas['schemas']['JobUpdate'];
+export type JobAttachment = JobsSchemas['schemas']['JobAttachment'];
+export type FixedLocations = JobsSchemas['schemas']['FixedLocations'];
+export type OverseasLocations = JobsSchemas['schemas']['OverseasLocations'];
+export type Salary = JobsSchemas['schemas']['Salary'];
+export type Contacts = JobsSchemas['schemas']['Contacts'];
+export type Approach = JobsSchemas['schemas']['Approach'];
+export type Assignments = JobsSchemas['schemas']['Assignments'];
+export type Grade = JobsSchemas['schemas']['Grade'];
+export type Profession = JobsSchemas['schemas']['Profession'];
+export type DCStatus = JobsSchemas['schemas']['DCStatus'];
+
+// Search API types
 export type JobResultItem = SearchSchemas['schemas']['JobResultItem'];
 export type JobSearchResponse = SearchSchemas['schemas']['JobSearchResponse'];
-export type FixedLocation = SearchSchemas['schemas']['FixedLocation'];
-export type OverseasLocation = SearchSchemas['schemas']['OverseasLocation'];
-export type Salary = SearchSchemas['schemas']['Salary'];
-export type Contacts = SearchSchemas['schemas']['Contacts'];
-export type Approach = SearchSchemas['schemas']['Approach'];
-export type Assignments = SearchSchemas['schemas']['Assignments'];
-export type Grade = SearchSchemas['schemas']['Grade'];
-export type Profession = SearchSchemas['schemas']['Profession'];
 export type ApiError = SearchSchemas['schemas']['Error'];
