@@ -20,15 +20,13 @@ The generated exports ensure consistency across all applications in the Jobs Boa
 │   └── search/                # Search API service schemas
 │       └── openapi.yaml
 ├── generated/                 # Auto-generated code (do not edit manually)
-│   ├── jobs.ts               # TypeScript from jobs/openapi.yaml
-│   ├── search.ts             # TypeScript from search/openapi.yaml
+│   ├── typescript/            # TypeScript types
+│   │   ├── jobs.ts           # Generated from jobs/openapi.yaml
+│   │   ├── search.ts         # Generated from search/openapi.yaml
+│   │   └── src/              # TypeScript entry points
 │   └── python/               # Python Pydantic models
 │       ├── jobs/
 │       └── search/
-├── src/                       # TypeScript source entry points
-│   ├── index.ts              # Main entry point with type aliases
-│   ├── jobs.ts               # Jobs API exports
-│   └── search.ts             # Search API exports
 ├── scripts/                   # Generation scripts
 │   └── generate_pydantic.sh  # Generate Pydantic models
 └── dist/                      # Compiled TypeScript output (excluded from git)

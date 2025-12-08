@@ -9,12 +9,12 @@ export {
   components as SearchComponents,
   operations as SearchOperations,
   $defs as Search$defs
-} from '../generated/search';
+} from '../search';
 
-export type { paths, webhooks, components, operations, $defs } from '../generated/search';
+export type { paths, webhooks, components, operations, $defs } from '../search';
 
 // Re-export commonly used schema types for convenience
-import type { components } from '../generated/search';
+import type { components } from '../search';
 
 export type Job = components['schemas']['Job'];
 export type JobResultItem = components['schemas']['JobResultItem'];

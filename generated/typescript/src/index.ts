@@ -12,7 +12,7 @@ export {
   components as JobsComponents,
   operations as JobsOperations,
   $defs as Jobs$defs
-} from '../generated/jobs';
+} from '../jobs';
 
 // Re-export Search API with namespaced exports
 export {
@@ -21,10 +21,10 @@ export {
   components as SearchComponents,
   operations as SearchOperations,
   $defs as Search$defs
-} from '../generated/search';
+} from '../search';
 
 // Export commonly used types at the top level for convenience
-import type { components as SearchSchemas } from '../generated/search';
+import type { components as SearchSchemas } from '../search';
 
 export type Job = SearchSchemas['schemas']['Job'];
 export type JobResultItem = SearchSchemas['schemas']['JobResultItem'];
