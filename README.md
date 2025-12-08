@@ -23,12 +23,13 @@ The generated exports ensure consistency across all applications in the Jobs Boa
 │   ├── typescript/            # TypeScript types
 │   │   ├── jobs.ts           # Generated from jobs/openapi.yaml
 │   │   ├── search.ts         # Generated from search/openapi.yaml
-│   │   └── src/              # TypeScript entry points
+│   │   └── src/              # Auto-generated TypeScript entry points
 │   └── python/               # Python Pydantic models
 │       ├── jobs/
 │       └── search/
 ├── scripts/                   # Generation scripts
-│   └── generate_pydantic.sh  # Generate Pydantic models
+│   ├── generate_pydantic.sh  # Generate Pydantic models
+│   └── generate-src-files.js # Auto-generate TypeScript src/ files
 └── dist/                      # Compiled TypeScript output (excluded from git)
 ```
 
@@ -144,9 +145,23 @@ npm install
 ### Generating Types
 
 **TypeScript:**
+
+The TypeScript generation process is fully automated. When you modify schemas, simply run:
+
 ```bash
 npm run generate:typescript
-# Or individually: npm run generate:jobs, npm run generate:search
+```
+
+This command will:
+1. Generate TypeScript types from OpenAPI schemas (`jobs.ts`, `search.ts`)
+2. Automatically create re-export files in `generated/typescript/src/`
+3. Export all schema types for convenient use in your applications
+
+You can also run individual steps:
+```bash
+npm run generate:jobs      # Generate types from jobs/openapi.yaml
+npm run generate:search    # Generate types from search/openapi.yaml
+npm run generate:src       # Auto-generate src/ re-export files
 ```
 
 **Python:**
@@ -156,6 +171,8 @@ npm run generate:python
 ```
 
 Generated models are placed in `generated/` directory.
+
+**Note:** The `generated/typescript/src/` files are now auto-generated. You no longer need to manually edit these files when schemas change!
 
 ### Building
 
