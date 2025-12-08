@@ -39,7 +39,7 @@ dev = [
 packages = ["jobs_data_contracts", "jobs_data_contracts.jobs", "jobs_data_contracts.search"]
 
 [tool.setuptools.package-dir]
-"jobs_data_contracts" = "python/jobs_data_contracts"
+"jobs_data_contracts" = "generated/python"
 
 [project.urls]
 Homepage = "https://github.com/Cab-mark/Jobs-data-contracts"
