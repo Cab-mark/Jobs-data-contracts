@@ -12,6 +12,6 @@
     "outDir": "./dist",
     "lib": ["ES2020"]
   },
-  "include": ["src/**/*", "generated/**/*"],
+  "include": ["generated/typescript/**/*"],
   "exclude": ["node_modules", "dist"]
 }

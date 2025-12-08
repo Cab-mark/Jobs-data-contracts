@@ -9,6 +9,6 @@ export {
   components as JobsComponents,
   operations as JobsOperations,
   $defs as Jobs$defs
-} from '../generated/jobs';
+} from '../jobs';
 
-export type { paths, webhooks, components, operations, $defs } from '../generated/jobs';
+export type { paths, webhooks, components, operations, $defs } from '../jobs';

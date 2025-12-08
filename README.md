@@ -4,7 +4,11 @@ Canonical data contracts and schemas for the CS Jobs Board solution. This reposi
 
 ## Overview
 
-This repository contains OpenAPI/JSON Schema definitions that are used to generate type-safe TypeScript types. The generated exports ensure consistency across all applications in the Jobs Board platform, including Next.js applications.
+This repository contains OpenAPI/JSON Schema definitions that are used to generate:
+- **TypeScript types** for Next.js and Node.js applications
+- **Python Pydantic models** for FastAPI applications
+
+The generated exports ensure consistency across all applications in the Jobs Board platform.
 
 ## Repository Structure
 
@@ -15,17 +19,24 @@ This repository contains OpenAPI/JSON Schema definitions that are used to genera
 │   │   └── openapi.yaml
 │   └── search/                # Search API service schemas
 │       └── openapi.yaml
-├── generated/                 # Auto-generated TypeScript (do not edit manually)
-│   ├── jobs.ts               # Generated from jobs/openapi.yaml
-│   └── search.ts             # Generated from search/openapi.yaml
-├── src/                       # Source entry points
-│   ├── index.ts              # Main entry point with type aliases
-│   ├── jobs.ts               # Jobs API exports
-│   └── search.ts             # Search API exports
-└── dist/                      # Compiled output (excluded from git)
+├── generated/                 # Auto-generated code (do not edit manually)
+│   ├── typescript/            # TypeScript types
+│   │   ├── jobs.ts           # Generated from jobs/openapi.yaml
+│   │   ├── search.ts         # Generated from search/openapi.yaml
+│   │   └── src/              # TypeScript entry points
+│   └── python/               # Python Pydantic models
+│       ├── jobs/
+│       └── search/
+├── scripts/                   # Generation scripts
+│   └── generate_pydantic.sh  # Generate Pydantic models
+└── dist/                      # Compiled TypeScript output (excluded from git)
 ```
 
-## Installation
+---
+
+## TypeScript/JavaScript Usage
+
+### Installation
 
 Install the package from npm:
 
@@ -39,9 +50,7 @@ Or with yarn:
 yarn add jobs-data-contracts
 ```
 
-## Usage
-
-### Importing Types
+### Usage
 
 Import commonly used types directly:
 
@@ -58,40 +67,6 @@ import {
   OverseasLocation 
 } from 'jobs-data-contracts';
 ```
-
-### Using Types in Your Application
-
-```typescript
-import { Job, JobSearchResponse } from 'jobs-data-contracts';
-
-// Type-safe job object
-const job: Job = {
-  externalId: 'ext-123',
-  approach: 'External',
-  title: 'Software Engineer',
-  description: 'Join our team...',
-  organisation: 'Tech Corp',
-  location: [{ countryName: 'United Kingdom', countryCode: 'GB' }],
-  grade: 'Grade 7 Equivalent',
-  assignmentType: 'Permanent',
-  personalSpec: 'Requirements...',
-  applyDetail: 'How to apply...',
-  closingDate: '2024-12-31T23:59:59Z',
-  profession: 'Digital and Data',
-  recruitmentEmail: 'jobs@example.com'
-};
-
-// Type-safe API response
-const searchResponse: JobSearchResponse = {
-  results: [],
-  total: 0,
-  page: 1,
-  pageSize: 10,
-  totalPages: 0
-};
-```
-
-### Importing from Specific Modules
 
 For more granular imports:
 
@@ -118,13 +93,47 @@ import { JobsComponents, JobsPaths, JobsOperations } from 'jobs-data-contracts/j
 | `Assignments` | Enum: Apprentice, FTA, Loan, Secondment, Permanent |
 | `Grade` | Enum: Civil Service grades |
 | `Profession` | Enum: Civil Service professions |
-| `ApiError` | Error response type |
+| `Error` | Error response type |
+
+---
+
+## Python/Pydantic Usage
+
+### Installation
+
+```bash
+pip install jobs-data-contracts
+```
+
+### Usage
+
+Import and use Pydantic models in your FastAPI application:
+
+```python
+from fastapi import FastAPI
+from jobs_data_contracts import Job, JobSearchResponse
+
+app = FastAPI()
+
+@app.post("/jobs", response_model=Job)
+async def create_job(job: Job):
+    return job  # Automatic validation
+
+@app.get("/search", response_model=JobSearchResponse)
+async def search_jobs():
+    return JobSearchResponse(results=[], total=0, page=1, pageSize=10, totalPages=0)
+```
+
+All models provide automatic validation, type safety, and serialization via Pydantic v2.
+
+---
 
 ## Development
 
 ### Prerequisites
 
-- Node.js >= 18
+- **For TypeScript**: Node.js >= 18
+- **For Python**: Python >= 3.8
 
 ### Setup
 
@@ -132,89 +141,59 @@ import { JobsComponents, JobsPaths, JobsOperations } from 'jobs-data-contracts/j
 npm install
 ```
 
-### Generating TypeScript Types
+### Generating Types
 
-To regenerate TypeScript types from the OpenAPI schemas:
-
+**TypeScript:**
 ```bash
-# Generate all TypeScript types
 npm run generate:typescript
-
-# Or generate individually
-npm run generate:jobs    # Generate from jobs/openapi.yaml
-npm run generate:search  # Generate from search/openapi.yaml
+# Or individually: npm run generate:jobs, npm run generate:search
 ```
 
-### Building the Package
+**Python:**
+```bash
+npm run generate:python
+# Or: ./scripts/generate_pydantic.sh
+```
 
-Build the package (generates types and compiles TypeScript):
+Generated models are placed in `generated/` directory.
 
+### Building
+
+**TypeScript:**
 ```bash
 npm run build
+```
+
+**Python:**
+```bash
+npm run generate:python
+python -m build
 ```
 
 ### Testing
 
-Type-check without emitting files:
-
 ```bash
-npm test
+npm test  # TypeScript type checking
 ```
+
+---
 
 ## Publishing
 
-### Publishing to npm
-
-1. Update the version in `package.json`
-2. Build and publish:
+### TypeScript to npm
 
 ```bash
 npm run build
 npm publish
 ```
 
-The `prepublishOnly` script automatically runs the build before publishing.
-
-### Publishing a Scoped Package
-
-To publish as a scoped package (e.g., `@your-org/jobs-data-contracts`):
-
-1. Update the `name` in `package.json`:
-   ```json
-   "name": "@your-org/jobs-data-contracts"
-   ```
-
-2. Publish with public access:
-   ```bash
-   npm publish --access public
-   ```
-
-### Publishing to GitHub Packages
-
-Add to `package.json`:
-
-```json
-"publishConfig": {
-  "registry": "https://npm.pkg.github.com"
-}
-```
-
-Then publish:
+### Python to PyPI
 
 ```bash
-npm publish
-```
-
-### Local Development (without publishing)
-
-Link the package locally for development:
-
-```bash
-# In this repository
-npm link
-
-# In your Next.js application
-npm link jobs-data-contracts
+npm run generate:python
+pip install build twine
+python -m build
+python -m twine upload dist/*
 ```
 
 ## Versioning
@@ -228,7 +207,7 @@ This repository follows [Semantic Versioning](https://semver.org/):
 ## Contributing
 
 1. **Schema Changes**: All schema modifications should be made in the `schemas/` directory
-2. **Generation**: After schema changes, run `npm run generate:typescript` to regenerate types
+2. **Generation**: After schema changes, run generation scripts to update types
 3. **Testing**: Run `npm test` to verify types compile correctly
 4. **Documentation**: Update this README if adding new types or changing usage
 
