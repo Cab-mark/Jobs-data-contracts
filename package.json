@@ -1,29 +1,30 @@
 {
   "name": "jobs-data-contracts",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Canonical data contracts and schemas for the CS Jobs Board solution. This repository serves as the single source of truth for all data structures used across the Jobs Board ecosystem.",
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/typescript/src/index.js",
+  "module": "./dist/typescript/src/index.js",
+  "types": "./dist/typescript/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
-      "import": "./dist/src/index.js",
-      "require": "./dist/src/index.js"
+      "types": "./dist/typescript/src/index.d.ts",
+      "import": "./dist/typescript/src/index.js",
+      "require": "./dist/typescript/src/index.js"
     },
     "./jobs": {
-      "types": "./dist/src/jobs.d.ts",
-      "import": "./dist/src/jobs.js",
-      "require": "./dist/src/jobs.js"
+      "types": "./dist/typescript/src/jobs.d.ts",
+      "import": "./dist/typescript/src/jobs.js",
+      "require": "./dist/typescript/src/jobs.js"
     },
     "./search": {
-      "types": "./dist/src/search.d.ts",
-      "import": "./dist/src/search.js",
-      "require": "./dist/src/search.js"
+      "types": "./dist/typescript/src/search.d.ts",
+      "import": "./dist/typescript/src/search.js",
+      "require": "./dist/typescript/src/search.js"
     }
   },
   "files": [
-    "dist",
+    "dist/typescript",
+    "dist/python",
     "schemas",
     "LICENSE",
     "README.md"
@@ -35,8 +36,8 @@
     "generate:typescript": "npm run generate:jobs && npm run generate:search && npm run generate:src",
     "generate:python": "./scripts/generate_pydantic.sh",
     "build": "npm run generate:typescript && tsc",
-    "build:python": "npm run generate:python",
-    "prepublishOnly": "npm run build",
+    "build:python": "python -m build --outdir dist/python",
+    "prepublishOnly": "npm run build && npm run build:python",
     "test": "tsc --noEmit"
   },
   "keywords": [

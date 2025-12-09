@@ -19,7 +19,7 @@ paths:
       summary: Retrieve all jobs (minimal)
       operationId: listJobs
       description: |
-        Returns a minimal list of jobs (identifiers, title and approach).
+        Returns a minimal list of jobs (identifiers, title, approach, and closingDate).
         Optional query parameters can be used to filter by closing date/time
         and approach. closingDate filters jobs whose closingDate is on or after
         the provided date/time.
@@ -96,7 +96,7 @@ paths:
       summary: Replace an existing job identified by externalId
       operationId: replaceJobByExternalId
       requestBody:
-        description: Full job payload to replace an existing job. The resource to replace is identified by the path parameter externalId. externalId in the body, if provided, MUST match the path parameter.
+        description: Full job payload to replace an existing job. The resource to replace is identified by the path parameter externalId. externalId in the body, if provided, MUST match the path param[...]
         required: true
         content:
           application/json:
@@ -151,11 +151,16 @@ components:
           type: string
         approach:
           $ref: "#/components/schemas/Approach"
+        closingDate:
+          type: string
+          format: date-time
+          description: Closing date/time for applications
       required:
         - id
         - externalId
         - title
         - approach
+        - closingDate
 
     Job:
       type: object
@@ -190,6 +195,16 @@ components:
             - type: string
         assignmentType:
           $ref: "#/components/schemas/Assignments"
+        workLocation:
+          type: array
+          description: Primary work location(s)
+          items:
+            $ref: "#/components/schemas/WorkLocation"
+        workingPattern:
+          type: array
+          description: Working pattern(s)
+          items:
+            $ref: "#/components/schemas/WorkingPattern"
         personalSpec:
           type: string
           description: Personal specification content (HTML or text)
@@ -258,6 +273,8 @@ components:
         - location
         - grade
         - assignmentType
+        - workLocation
+        - workingPattern
         - personalSpec
         - applyDetail
         - closingDate
@@ -291,6 +308,14 @@ components:
             - type: string
         assignmentType:
           $ref: "#/components/schemas/Assignments"
+        workLocation:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkLocation"
+        workingPattern:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkingPattern"
         personalSpec:
           type: string
         applyDetail:
@@ -355,6 +380,8 @@ components:
         - location
         - grade
         - assignmentType
+        - workLocation
+        - workingPattern
         - personalSpec
         - applyDetail
         - closingDate
@@ -385,6 +412,14 @@ components:
             - type: string
         assignmentType:
           $ref: "#/components/schemas/Assignments"
+        workLocation:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkLocation"
+        workingPattern:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkingPattern"
         personalSpec:
           type: string
         applyDetail:
@@ -555,6 +590,20 @@ components:
         - Loan
         - Secondment
         - Permanent
+
+    WorkLocation:
+      type: string
+      description: Work location
+      enum:
+        - Home based
+        - Office based
+
+    WorkingPattern:
+      type: string
+      description: Working pattern
+      enum:
+        - Full-time
+        - Part-time
 
     Grade:
       type: string

@@ -2,20 +2,9 @@
  * Search API TypeScript types
  * Auto-generated from OpenAPI schema - do not edit manually
  */
-
-export {
-  paths as SearchPaths,
-  webhooks as SearchWebhooks,
-  components as SearchComponents,
-  operations as SearchOperations,
-  $defs as Search$defs
-} from '../search';
-
+export { paths as SearchPaths, webhooks as SearchWebhooks, components as SearchComponents, operations as SearchOperations, $defs as Search$defs } from '../search';
 export type { paths, webhooks, components, operations, $defs } from '../search';
-
-// Re-export commonly used schema types for convenience
 import type { components } from '../search';
-
 export type JobSearchRequest = components['schemas']['JobSearchRequest'];
 export type JobResultItem = components['schemas']['JobResultItem'];
 export type JobSearchResponse = components['schemas']['JobSearchResponse'];
@@ -29,3 +18,4 @@ export type Assignments = components['schemas']['Assignments'];
 export type Grade = components['schemas']['Grade'];
 export type Profession = components['schemas']['Profession'];
 export type Error = components['schemas']['Error'];
+//# sourceMappingURL=search.d.ts.map

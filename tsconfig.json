@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
+    "outDir": "./dist/typescript",
     "lib": ["ES2020"]
   },
   "include": ["generated/typescript/**/*"],

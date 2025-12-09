@@ -24,7 +24,8 @@ package-lock.json
 .DS_Store
 
 # Build artifacts
-dist/
+dist/typescript/
+dist/python/
 build/
 *.egg-info/
 .eggs/
