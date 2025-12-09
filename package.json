@@ -24,7 +24,9 @@
   },
   "files": [
     "dist",
-    "schemas"
+    "schemas",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "generate:jobs": "openapi-typescript ./schemas/jobs/openapi.yaml -o ./generated/typescript/jobs.ts",
