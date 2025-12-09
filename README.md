@@ -210,8 +210,10 @@ npm publish
 npm run generate:python
 pip install build twine
 python -m build
-python -m twine upload dist/*
+python -m twine upload dist/*.whl dist/*.tar.gz
 ```
+
+**Note:** Use the specific file patterns (`dist/*.whl dist/*.tar.gz`) to avoid uploading TypeScript files that may be present in the `dist/` directory.
 
 ## Versioning
 
