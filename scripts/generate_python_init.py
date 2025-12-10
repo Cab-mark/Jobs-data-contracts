@@ -9,7 +9,6 @@ It also enforces module boundaries by filtering out Jobs-only types from search 
 """
 
 import ast
-import os
 from pathlib import Path
 from typing import List, Set, Tuple
 
@@ -34,15 +33,21 @@ def parse_public_symbols(models_file: Path) -> Tuple[List[str], Set[str]]:
         if isinstance(node, ast.ClassDef):
             # Check if this is a public class (not starting with _)
             if not node.name.startswith('_'):
-                # Check if it's a BaseModel or Enum subclass
+                # Check if it's a BaseModel, Enum, or RootModel subclass
                 for base in node.bases:
                     base_name = None
                     if isinstance(base, ast.Name):
                         base_name = base.id
                     elif isinstance(base, ast.Attribute):
                         base_name = base.attr
+                    elif isinstance(base, ast.Subscript):
+                        # Handle subscripted types like RootModel[...]
+                        if isinstance(base.value, ast.Name):
+                            base_name = base.value.id
+                        elif isinstance(base.value, ast.Attribute):
+                            base_name = base.value.attr
                     
-                    # Include BaseModel and Enum classes
+                    # Include BaseModel, Enum, and RootModel classes
                     if base_name in ('BaseModel', 'Enum', 'RootModel'):
                         if node.name not in symbols_set:
                             symbols.append(node.name)

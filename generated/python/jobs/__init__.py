@@ -18,8 +18,14 @@ from jobs_data_contracts.jobs.models import (
     Profession,
     DCStatus,
     JobSummary,
+    Location,
+    Location1,
     Job,
+    Location2,
+    Location3,
     JobCreate,
+    Location4,
+    Location5,
     JobUpdate,
 )
 
@@ -37,7 +43,13 @@ __all__ = [
     "Profession",
     "DCStatus",
     "JobSummary",
+    "Location",
+    "Location1",
     "Job",
+    "Location2",
+    "Location3",
     "JobCreate",
+    "Location4",
+    "Location5",
     "JobUpdate",
 ]
