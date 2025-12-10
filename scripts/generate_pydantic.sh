@@ -60,3 +60,9 @@ datamodel-codegen \
     --enable-faux-immutability
 
 echo "✓ Pydantic models generated successfully!"
+
+# Generate __init__.py files with proper exports
+echo "Generating __init__.py files..."
+python3 scripts/generate_python_init.py
+
+echo "✓ All Python generation complete!"
