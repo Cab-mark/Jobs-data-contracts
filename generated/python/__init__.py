@@ -5,7 +5,7 @@ This package provides Pydantic models generated from OpenAPI schemas
 for use in FastAPI applications.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.1.0"
 
 # Import job-related types from jobs module
 from jobs_data_contracts.jobs.models import (
@@ -17,6 +17,7 @@ from jobs_data_contracts.jobs.models import (
 from jobs_data_contracts.search.models import (
     Approach,
     Assignments,
+    DistanceUnit,
     Error,
     FixedLocation,
     Grade,
@@ -25,6 +26,8 @@ from jobs_data_contracts.search.models import (
     OverseasLocation,
     Profession,
     Salary,
+    WorkingPattern,
+    WorkLocation,
 )
 
 __all__ = [
@@ -39,7 +42,10 @@ __all__ = [
     "Salary",
     "Approach",
     "Assignments",
+    "DistanceUnit",
     "Grade",
     "Profession",
     "Error",
+    "WorkingPattern",
+    "WorkLocation",
 ]
