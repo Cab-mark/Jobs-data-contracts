@@ -13,9 +13,9 @@ export interface paths {
         };
         /**
          * Retrieve all jobs (minimal)
-         * @description Returns a minimal list of jobs (identifiers, title, approach, and closingDate).
+         * @description Returns a minimal list of jobs (identifiers, title, approach, and dateClosing).
          *     Optional query parameters can be used to filter by closing date/time
-         *     and approach. closingDate filters jobs whose closingDate is on or after
+         *     and approach. dateClosing filters jobs whose dateClosing is on or after
          *     the provided date/time.
          */
         get: operations["listJobs"];
@@ -66,7 +66,7 @@ export interface components {
              * Format: date-time
              * @description Closing date/time for applications
              */
-            closingDate: string;
+            dateClosing: string;
         };
         /** @description Full job posting object */
         Job: {
@@ -91,9 +91,14 @@ export interface components {
             applyDetail: string;
             /**
              * Format: date-time
+             * @description Date the job was posted
+             */
+            datePosted: string;
+            /**
+             * Format: date-time
              * @description Closing date/time for applications
              */
-            closingDate: string;
+            dateClosing: string;
             profession: components["schemas"]["Profession"];
             /** Format: email */
             recruitmentEmail: string;
@@ -133,8 +138,13 @@ export interface components {
             workingPattern: components["schemas"]["WorkingPattern"][];
             personalSpec: string;
             applyDetail: string;
+            /**
+             * Format: date-time
+             * @description Date the job was posted
+             */
+            datePosted: string;
             /** Format: date-time */
-            closingDate: string;
+            dateClosing: string;
             profession: components["schemas"]["Profession"];
             /** Format: email */
             recruitmentEmail: string;
@@ -172,8 +182,13 @@ export interface components {
             workingPattern?: components["schemas"]["WorkingPattern"][];
             personalSpec?: string;
             applyDetail?: string;
+            /**
+             * Format: date-time
+             * @description Date the job was posted
+             */
+            datePosted?: string;
             /** Format: date-time */
-            closingDate?: string;
+            dateClosing?: string;
             profession?: components["schemas"]["Profession"];
             /** Format: email */
             recruitmentEmail?: string;
@@ -287,8 +302,8 @@ export interface operations {
     listJobs: {
         parameters: {
             query?: {
-                /** @description Return jobs with closingDate on or after this date/time (ISO 8601). */
-                closingDate?: string;
+                /** @description Return jobs with dateClosing on or after this date/time (ISO 8601). */
+                dateClosing?: string;
                 /** @description Filter results to jobs with the specified approach. */
                 approach?: components["schemas"]["Approach"];
             };
