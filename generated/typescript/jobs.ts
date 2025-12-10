@@ -78,11 +78,7 @@ export interface components {
             title: string;
             description: string;
             organisation: string;
-            /**
-             * @description One or more locations for the role. Each item is either a fixed location
-             *     (UK address with geo) or an overseas location (country-based).
-             */
-            location: (components["schemas"]["FixedLocations"] | components["schemas"]["OverseasLocations"])[];
+            location: components["schemas"]["FixedLocations"][] | components["schemas"]["OverseasLocations"][];
             grade: components["schemas"]["Grade"] | string;
             assignmentType: components["schemas"]["Assignments"];
             /** @description Primary work location(s) */
@@ -130,7 +126,7 @@ export interface components {
             title: string;
             description: string;
             organisation: string;
-            location: (components["schemas"]["FixedLocations"] | components["schemas"]["OverseasLocations"])[];
+            location: components["schemas"]["FixedLocations"][] | components["schemas"]["OverseasLocations"][];
             grade: components["schemas"]["Grade"] | string;
             assignmentType: components["schemas"]["Assignments"];
             workLocation: components["schemas"]["WorkLocation"][];
@@ -169,7 +165,7 @@ export interface components {
             title?: string;
             description?: string;
             organisation?: string;
-            location?: (components["schemas"]["FixedLocations"] | components["schemas"]["OverseasLocations"])[];
+            location?: components["schemas"]["FixedLocations"][] | components["schemas"]["OverseasLocations"][];
             grade?: components["schemas"]["Grade"] | string;
             assignmentType?: components["schemas"]["Assignments"];
             workLocation?: components["schemas"]["WorkLocation"][];

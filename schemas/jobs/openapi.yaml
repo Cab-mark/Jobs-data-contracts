@@ -181,14 +181,17 @@ components:
         organisation:
           type: string
         location:
-          type: array
-          description: |
-            One or more locations for the role. Each item is either a fixed location
-            (UK address with geo) or an overseas location (country-based).
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/FixedLocations"
-              - $ref: "#/components/schemas/OverseasLocations"
+          oneOf:
+            - type: array
+              description: An array of fixed UK locations (all items are FixedLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/FixedLocations"
+            - type: array
+              description: An array of overseas locations (all items are OverseasLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/OverseasLocations"
         grade:
           anyOf:
             - $ref: "#/components/schemas/Grade"
@@ -297,11 +300,17 @@ components:
         organisation:
           type: string
         location:
-          type: array
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/FixedLocations"
-              - $ref: "#/components/schemas/OverseasLocations"
+          oneOf:
+            - type: array
+              description: An array of fixed UK locations (all items are FixedLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/FixedLocations"
+            - type: array
+              description: An array of overseas locations (all items are OverseasLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/OverseasLocations"
         grade:
           anyOf:
             - $ref: "#/components/schemas/Grade"
@@ -401,11 +410,17 @@ components:
         organisation:
           type: string
         location:
-          type: array
-          items:
-            oneOf:
-              - $ref: "#/components/schemas/FixedLocations"
-              - $ref: "#/components/schemas/OverseasLocations"
+          oneOf:
+            - type: array
+              description: An array of fixed UK locations (all items are FixedLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/FixedLocations"
+            - type: array
+              description: An array of overseas locations (all items are OverseasLocations)
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/OverseasLocations"
         grade:
           anyOf:
             - $ref: "#/components/schemas/Grade"
