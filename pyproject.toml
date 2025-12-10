@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jobs-data-contracts"
-version = "1.0.0"
+version = "1.1.0"
 description = "Canonical data contracts and schemas for the CS Jobs Board solution - Python Pydantic models"
 readme = "README.md"
 requires-python = ">=3.8"

@@ -1,6 +1,6 @@
 {
   "name": "jobs-data-contracts",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Canonical data contracts and schemas for the CS Jobs Board solution. This repository serves as the single source of truth for all data structures used across the Jobs Board ecosystem.",
   "main": "./dist/typescript/src/index.js",
   "module": "./dist/typescript/src/index.js",
