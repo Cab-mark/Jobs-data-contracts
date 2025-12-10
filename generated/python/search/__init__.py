@@ -7,11 +7,9 @@ Generated from schemas/search/openapi.yaml
 from jobs_data_contracts.search.models import (
     Approach,
     Assignments,
-    Contacts,
     Error,
     FixedLocation,
     Grade,
-    Job,
     JobResultItem,
     JobSearchResponse,
     OverseasLocation,
@@ -22,11 +20,9 @@ from jobs_data_contracts.search.models import (
 __all__ = [
     "Approach",
     "Assignments",
-    "Contacts",
     "Error",
     "FixedLocation",
     "Grade",
-    "Job",
     "JobResultItem",
     "JobSearchResponse",
     "OverseasLocation",
