@@ -19,18 +19,18 @@ paths:
       summary: Retrieve all jobs (minimal)
       operationId: listJobs
       description: |
-        Returns a minimal list of jobs (identifiers, title, approach, and closingDate).
+        Returns a minimal list of jobs (identifiers, title, approach, and dateClosing).
         Optional query parameters can be used to filter by closing date/time
-        and approach. closingDate filters jobs whose closingDate is on or after
+        and approach. dateClosing filters jobs whose dateClosing is on or after
         the provided date/time.
       parameters:
-        - name: closingDate
+        - name: dateClosing
           in: query
           required: false
           schema:
             type: string
             format: date-time
-          description: Return jobs with closingDate on or after this date/time (ISO 8601).
+          description: Return jobs with dateClosing on or after this date/time (ISO 8601).
         - name: approach
           in: query
           required: false
@@ -151,7 +151,7 @@ components:
           type: string
         approach:
           $ref: "#/components/schemas/Approach"
-        closingDate:
+        dateClosing:
           type: string
           format: date-time
           description: Closing date/time for applications
@@ -160,7 +160,7 @@ components:
         - externalId
         - title
         - approach
-        - closingDate
+        - dateClosing
 
     Job:
       type: object
@@ -214,7 +214,7 @@ components:
         applyDetail:
           type: string
           description: Application details/instructions
-        closingDate:
+        dateClosing:
           type: string
           format: date-time
           description: Closing date/time for applications
@@ -280,7 +280,7 @@ components:
         - workingPattern
         - personalSpec
         - applyDetail
-        - closingDate
+        - dateClosing
         - profession
         - recruitmentEmail
 
@@ -329,7 +329,7 @@ components:
           type: string
         applyDetail:
           type: string
-        closingDate:
+        dateClosing:
           type: string
           format: date-time
         profession:
@@ -393,7 +393,7 @@ components:
         - workingPattern
         - personalSpec
         - applyDetail
-        - closingDate
+        - dateClosing
         - profession
         - recruitmentEmail
 
@@ -439,7 +439,7 @@ components:
           type: string
         applyDetail:
           type: string
-        closingDate:
+        dateClosing:
           type: string
           format: date-time
         profession:

@@ -39,7 +39,7 @@ paths:
         - name: sort
           in: query
           description: >
-            Sort order (e.g. relevance, closingDate:asc, distance:asc). When a radius is provided,
+            Sort order (e.g. relevance, dateClosing:asc, distance:asc). When a radius is provided,
             you may sort by distance using distance:asc or distance:desc.
           schema:
             type: string
@@ -231,7 +231,7 @@ components:
           default: 10
         sort:
           type: string
-          description: Sort order (e.g. relevance, closingDate:asc, distance:asc).
+          description: Sort order (e.g. relevance, dateClosing:asc, distance:asc).
           example: "distance:asc"
         latitude:
           type: number
@@ -300,7 +300,7 @@ components:
         - salary
         - workLocation
         - grade
-        - closingDate
+        - dateClosing
         - profession
         - approach
       properties:
@@ -344,7 +344,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/Grade'
             - type: string
-        closingDate:
+        dateClosing:
           type: string
           format: date
           description: Closing date (ISO-8601 date). Date-only format; time component is not accepted.
