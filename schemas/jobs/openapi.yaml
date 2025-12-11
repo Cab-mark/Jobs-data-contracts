@@ -214,6 +214,10 @@ components:
         applyDetail:
           type: string
           description: Application details/instructions
+        datePosted:
+          type: string
+          format: date-time
+          description: Date the job was posted
         dateClosing:
           type: string
           format: date-time
@@ -280,6 +284,7 @@ components:
         - workingPattern
         - personalSpec
         - applyDetail
+        - datePosted
         - dateClosing
         - profession
         - recruitmentEmail
@@ -329,6 +334,10 @@ components:
           type: string
         applyDetail:
           type: string
+        datePosted:
+          type: string
+          format: date-time
+          description: Date the job was posted
         dateClosing:
           type: string
           format: date-time
@@ -393,6 +402,7 @@ components:
         - workingPattern
         - personalSpec
         - applyDetail
+        - datePosted
         - dateClosing
         - profession
         - recruitmentEmail
@@ -439,6 +449,10 @@ components:
           type: string
         applyDetail:
           type: string
+        datePosted:
+          type: string
+          format: date-time
+          description: Date the job was posted
         dateClosing:
           type: string
           format: date-time
