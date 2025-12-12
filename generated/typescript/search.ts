@@ -49,7 +49,7 @@ export interface components {
             /** @default 10 */
             pageSize: number;
             /**
-             * @description Sort order (e.g. relevance, closingDate:asc, distance:asc).
+             * @description Sort order (e.g. relevance, dateClosing:asc, distance:asc).
              * @example distance:asc
              */
             sort?: string;
@@ -105,7 +105,7 @@ export interface components {
              * Format: date
              * @description Closing date (ISO-8601 date). Date-only format; time component is not accepted.
              */
-            closingDate: string;
+            dateClosing: string;
             profession: components["schemas"]["Profession"];
             approach: components["schemas"]["Approach"];
         };
@@ -190,7 +190,7 @@ export interface operations {
                 page?: number;
                 /** @description Page size */
                 pageSize?: number;
-                /** @description Sort order (e.g. relevance, closingDate:asc, distance:asc). When a radius is provided, you may sort by distance using distance:asc or distance:desc. */
+                /** @description Sort order (e.g. relevance, dateClosing:asc, distance:asc). When a radius is provided, you may sort by distance using distance:asc or distance:desc. */
                 sort?: string;
                 /** @description Latitude for geospatial filtering (WGS84). Required with longitude when radius is provided. */
                 latitude?: number;
